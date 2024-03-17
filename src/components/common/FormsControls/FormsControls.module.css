@@ -1,0 +1,23 @@
+.error {
+    color: #d70202;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.error .textarea {
+    border: 1px solid #d70202;
+    margin-bottom: 10px;
+}
+
+.error .textarea::placeholder {
+    color: #d70202;
+}
+.error .input {
+    border-color: #d70202;
+}
+
+.error .input::placeholder {
+    color: #d70202;
+}
+

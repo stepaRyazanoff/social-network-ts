@@ -1,0 +1,20 @@
+.dialogItem {
+	display: inline-block;
+	max-width: 100px;
+	width: 100%;
+	border-right: 1px solid #898c91;
+}
+
+.dialogItem a {
+	transition: all 0.1s;
+}
+
+.dialogItem a:hover {
+	background-color: #898c91;
+	color: #e4e8f0;
+}
+
+
+.dialogItem:not(:first-child)   {
+	padding-top: 10px;
+}

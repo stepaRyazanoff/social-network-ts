@@ -1,0 +1,9 @@
+.statusInner {
+    padding: 5px;
+    cursor: pointer;
+}
+
+.statusInner input {
+    outline: none;
+    padding: 5px;
+}

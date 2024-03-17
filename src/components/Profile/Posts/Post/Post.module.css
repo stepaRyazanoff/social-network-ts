@@ -1,0 +1,34 @@
+.postItem {
+    margin-bottom: 20px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 3px;
+    display: flex;
+    align-items: center;
+}
+
+.postBox {
+    flex-basis: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.message {
+    max-width: 300px;
+}
+
+.postItem img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 20px;
+}
+
+.likes {
+    border-radius: 10px;
+    border: 1px solid black;
+    width: 50px;
+    font-size: 9px;
+    text-align: center;
+}

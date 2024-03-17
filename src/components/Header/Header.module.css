@@ -1,0 +1,44 @@
+.header {
+    background-color: #e4e8f0;
+    min-height: 50px;
+    margin-bottom: 1px;
+    padding: 10px;
+}
+
+.headerLogo a {
+    font-size: 18px;
+}
+
+.headerInner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.loginBlock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.email {
+    margin-right: 10px;
+    transition: color .3s, transform .3s;
+}
+
+.email:hover{
+    color: #e92dc0;
+    cursor: pointer;
+}
+
+.email:active{
+    transform: scale(1.03);
+    user-select: none;
+}
+
+.loginBlock img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+

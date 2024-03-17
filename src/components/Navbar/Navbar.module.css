@@ -1,0 +1,25 @@
+.sidebar {
+    background-color: #e4e8f0;
+    max-width: 150px;
+    width: 100%;
+    padding: 20px 40px;
+    margin-right: 1px;
+}
+
+.menu li + li {
+    margin-top: 20px;
+}
+
+.menu a {
+    border-radius: 1px;
+    transition: background-color 0.1s;
+}
+
+.menu a:hover {
+    background-color: #898c91;
+    color: #e4e8f0;
+}
+
+.logout {
+    cursor: pointer;
+}
