@@ -16,15 +16,13 @@ export interface DialogsData {
 }
 
 const Dialogs: FC<Props> = ({dialogs, messages, sendMessage}) => {
-
     const dialogsElements = dialogs
         .map(d => (<DialogItem key={d.id} name={d.name} id={d.id}/>))
     const messagesElements = messages
         .map((m, index) => (<Message key={m.id} number={index + 1} message={m.message}/>))
 
-    const onSubmit = (dialogsData: DialogsData) => {
-        sendMessage(dialogsData.dialogs)
-    }
+    const onSubmit = (dialogsData: DialogsData) => sendMessage(dialogsData.dialogs)
+
 
     return (
         <div className={cl.dialogs}>

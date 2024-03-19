@@ -25,7 +25,6 @@ export enum ResultCodeEnumCaptchaUrl {
     captchaUrl = 10
 }
 
-
 export const usersAPI = {
     getUsers: async (pageSize = 1, currentPage = 5) => {
         const response = await
@@ -34,28 +33,24 @@ export const usersAPI = {
     },
 
     setSubscribe: async (id: number) => {
-        const response = await
-            instance.post<CommonAPIType<{}, ResultCodeEnum>>(`follow/${id}`)
+        const response = await instance.post<CommonAPIType>(`follow/${id}`)
         return response.data
     },
 
     deleteSubscribe: async (id: number) => {
-        const response = await
-            instance.delete(`follow/${id}`)
-        return response.data as CommonAPIType<{}, ResultCodeEnum>
+        const response = await instance.delete(`follow/${id}`)
+        return response.data as Promise<CommonAPIType>
     }
 }
 
 export const authAPI = {
     authMe: async () => {
-        const response = await
-            instance.get<Auth>('auth/me')
+        const response = await instance.get<Auth>('auth/me')
         return response.data
     },
 
     getAuthPhoto: async (userId: number) => {
-        const response = await
-            instance.get<Profile>(`profile/${userId}`)
+        const response = await instance.get<Profile>(`profile/${userId}`)
         return response.data.photos.small
     },
 
@@ -64,38 +59,31 @@ export const authAPI = {
                   rememberMe: boolean = false,
                   captcha: Nullable<string>) => {
         const response = await
-            instance.post<CommonAPIType<CommonData, ResultCodeEnum | ResultCodeEnumCaptchaUrl>>('auth/login', {
-                email,
-                password,
-                rememberMe,
-                captcha
-            })
+            instance.post<CommonAPIType<CommonData, ResultCodeEnum | ResultCodeEnumCaptchaUrl>>('auth/login',
+                {email, password, rememberMe, captcha})
         return response.data
     },
 
     logout: async () => {
-        const response = await
-            instance.delete('auth/login')
-        return response.data as CommonAPIType<{}, ResultCodeEnum>
+        const response = await instance.delete('auth/login')
+        return response.data as Promise<CommonAPIType>
     }
 }
 
 export const profileAPI = {
     getProfile: async (id: Nullable<number>) => {
-        const response = await
-            instance.get<Profile>(`profile/${id}`)
+        const response = await instance.get<Profile>(`profile/${id}`)
         return response.data
     },
 
     getUserStatus: async (userId: number) => {
-        const response = await
-            instance.get<string>(`profile/status/${userId}`)
+        const response = await instance.get<string>(`profile/status/${userId}`)
         return response.data
     },
 
     updateUserStatus: async (newStatus: string) => {
         const response = await
-            instance.put<CommonAPIType<{}, ResultCodeEnum>>('profile/status', {
+            instance.put<CommonAPIType>('profile/status', {
                 status: newStatus
             })
         return response.data
@@ -106,18 +94,14 @@ export const profileAPI = {
         formData.append('image', photoFile)
         const response = await
             instance.put<UserPhoto>('profile/photo', formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
+                headers: {'Content-Type': 'multipart/form-data'}
             })
         return response.data
     },
 
     setUpdatedProfile: async (profileData: Profile) => {
-        const response = await
-            instance.put<CommonAPIType<{}, ResultCodeEnum>>('profile',
-                profileData
-            )
+        const response = await instance.put<CommonAPIType>('profile',
+            profileData)
         return response.data
     }
 }
@@ -125,8 +109,7 @@ export const profileAPI = {
 
 export const securityAPI = {
     getCaptcha: async () => {
-        const response = await
-            instance.get<CaptchaUrl>('security/get-captcha-url')
+        const response = await instance.get<CaptchaUrl>('security/get-captcha-url')
         return response.data
     }
 }

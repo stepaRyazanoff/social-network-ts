@@ -1,7 +1,7 @@
 import React, {ComponentType} from "react"
 import {useLocation, useNavigate, useParams} from "react-router"
 
-export function withRouter<T>(Component: ComponentType<T>) {
+export function withRouter<T extends object>(Component: ComponentType<T>) {
     function ComponentWithRouterProp(props: T) {
         let location = useLocation()
         let navigate = useNavigate()

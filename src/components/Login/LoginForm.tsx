@@ -28,7 +28,7 @@ const LoginForm: FC<InjectedFormProps<LoginData, Props> & Props> =
                     'text',
                     false,
                     null,
-                    undefined)},
+                    undefined)}
                 {createField<LoginDataKeys>(
                     'password',
                     required,
@@ -51,20 +51,19 @@ const LoginForm: FC<InjectedFormProps<LoginData, Props> & Props> =
                     'remember me',
                     'checkbox')}
                 <button className={cl.loginBtn}>Login</button>
-                {captcha &&
-                    <div className={cl.captcha}>
-                        <img src={captcha} alt='captcha'/>
-                        {createField<LoginDataKeys>(
-                            'captcha',
-                            required,
-                            undefined,
-                            Input,
-                            'Введите символы с картинки',
-                            'text',
-                            false,
-                            null,
-                            undefined)}
-                    </div>}
+                {captcha && <div className={cl.captcha}>
+                    <img src={captcha} alt='captcha'/>
+                    {createField<LoginDataKeys>(
+                        'captcha',
+                        required,
+                        'loginInput',
+                        Input,
+                        'Введите символы с картинки',
+                        'text',
+                        false,
+                        null,
+                        undefined)}
+                </div>}
             </form>
         )
     }

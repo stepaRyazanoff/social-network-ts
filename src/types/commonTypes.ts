@@ -1,6 +1,10 @@
+import {ResultCodeEnum} from "../api/api";
+
+type Nullable<T> = null | T
+
 export interface Photos {
-    small: string | null
-    large: string | null
+    small: Nullable<string>
+    large: Nullable<string>
 }
 
 export interface ContactsType {
@@ -14,10 +18,10 @@ export interface ContactsType {
     mainLink: string
 }
 
-export type CommonAPIType<T, R> = {
+export type CommonAPIType<D = {}, R = ResultCodeEnum> = {
     resultCode: R
     messages: string[]
-    data: T
+    data: D
 }
 
 export interface CommonData {

@@ -1,4 +1,4 @@
-import React from "react"
+import React, {ComponentType} from "react"
 import {login, Nullable} from "../../redux/authReducer"
 import {connect} from "react-redux"
 import Login from "./Login"
@@ -28,7 +28,6 @@ class LoginContainer extends React.Component<StateProps & DispatchProps> {
         return (
             <>
                 {this.props.isAuth && <Navigate to={'/profile'}/>}
-
                 <Login logIn={this.logIn.bind(this)}
                        captcha={this.props.captcha}/>
             </>
@@ -41,7 +40,7 @@ const mapStateToProps = (state: RootState): StateProps => ({
     captcha: state.auth.captcha
 })
 
-export default compose(connect<StateProps, DispatchProps, unknown, RootState>
+export default compose<ComponentType>(connect<StateProps, DispatchProps, unknown, RootState>
 (mapStateToProps,
     {login}))
 ((LoginContainer))

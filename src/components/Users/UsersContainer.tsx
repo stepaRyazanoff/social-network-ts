@@ -1,4 +1,4 @@
-import React from "react"
+import React, {ComponentType} from "react"
 import {connect} from "react-redux"
 import Users from "./Users"
 import {
@@ -68,7 +68,7 @@ const mapStateToProps = (state: RootState): StateProps => ({
     followingInProgress: state.usersPage.followingInProgress,
 })
 
-export default compose
+export default compose<ComponentType>
 (connect<StateProps, DispatchProps, unknown, RootState>(mapStateToProps, {
     getUsers,
     subscribeToUser,

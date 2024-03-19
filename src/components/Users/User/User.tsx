@@ -5,7 +5,7 @@ import {NavLink} from "react-router-dom"
 import {Photos} from "../../../types/commonTypes"
 
 interface Props {
-    name:string
+    name: string
     photos: Photos,
     userId: number
     status: string
@@ -16,23 +16,18 @@ interface Props {
 }
 
 const User: FC<Props> = ({
-                  name,
-                  photos: {small},
-                  userId,
-                  status,
-                  followed,
-                  followingInProgress,
-                  subscribe,
-                  unsubscribe,
-              }) => {
+                             name,
+                             photos: {small},
+                             userId,
+                             status,
+                             followed,
+                             followingInProgress,
+                             subscribe,
+                             unsubscribe,
+                         }) => {
 
-    const onButtonClickSubscribe = (id: number) => {
-        subscribe(id)
-    }
-
-    const onButtonClickUnsubscribe = (id: number) => {
-        unsubscribe(id)
-    }
+    const onButtonClickSubscribe = (id: number) => subscribe(id)
+    const onButtonClickUnsubscribe = (id: number) => unsubscribe(id)
 
     const userSmallPhoto = small !== null ? small : unknownPhoto
 
@@ -51,17 +46,13 @@ const User: FC<Props> = ({
                 <div className={cl.itemStatus}>{status}</div>
                 {!followed && <button
                     disabled={followingInProgress.some(u => u === userId)}
-                    onClick={() => {
-                        onButtonClickSubscribe(userId)
-                    }}
+                    onClick={() => onButtonClickSubscribe(userId)}
                     className={cl.itemBtn}>
                     Подписаться
                 </button>}
                 {followed && <button
                     disabled={followingInProgress.some(u => u === userId)}
-                    onClick={() => {
-                        onButtonClickUnsubscribe(userId)
-                    }}
+                    onClick={() => onButtonClickUnsubscribe(userId)}
                     className={cl.itemBtn}>
                     Отписаться
                 </button>}

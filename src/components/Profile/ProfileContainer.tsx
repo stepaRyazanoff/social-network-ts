@@ -15,6 +15,7 @@ import {
 import {withRedirect} from "../../hoc/withRedirect"
 import {RootState} from "../../redux/redux-store"
 import {Nullable} from "../../redux/authReducer"
+import {NavigateFunction} from "react-router-dom"
 
 interface StateProps {
     isAuth: boolean
@@ -34,28 +35,41 @@ interface DispatchProps {
 }
 
 interface OwnProps {
-    profile: ProfileType
     isOwner: boolean
+    profile: Nullable<ProfileType>
     setUserPhoto: (photoFile: File) => void
     updateStatus: (newStatus: string) => void
     switchEditMode: (isFetching: boolean) => void
     setUpdatedProfile: (profileData: ProfileType) => void
 }
 
-class ProfileContainer extends React.Component<StateProps & DispatchProps & OwnProps> {
+interface PathParamsType {
+    router: {
+        location: Location
+        navigate: NavigateFunction
+        params: Record<'profileId', string | undefined>
+    }
+}
+
+type Props = StateProps & DispatchProps & OwnProps & PathParamsType
+
+class ProfileContainer extends React.Component<Props> {
 
     refreshProfile() {
-        let profileId = this.props.router.params.profileId
+        let profileId: Nullable<number> = Number(this.props.router.params.profileId)
         if (!profileId) profileId = this.props.authorizedId
-        this.props.setUserProfile(profileId)
-        this.props.getUserStatus(profileId)
+        if (!profileId) console.error('ID should be exist in URI params or in state (\'authorizedId\')')
+        else {
+            this.props.setUserProfile(profileId)
+            this.props.getUserStatus(profileId)
+        }
     }
 
     componentDidMount() {
         this.refreshProfile()
     }
 
-    componentDidUpdate(prevProps: StateProps, prevState: StateProps) {
+    componentDidUpdate(prevProps: Props) {
         if (prevProps.router.params.profileId !== this.props.router.params.profileId) {
             this.refreshProfile()
         }

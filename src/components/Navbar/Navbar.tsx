@@ -13,9 +13,7 @@ interface IsActive {
 const Navbar: FC<Props> = ({logOut}) => {
     const setActive = ({isActive}: IsActive) => (isActive ? 'active-link' : '')
 
-    const onClicked = () => {
-        logOut()
-    }
+    const onClicked = () => logOut()
 
     return (
         <aside className={cl.sidebar}>

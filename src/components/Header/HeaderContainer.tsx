@@ -1,9 +1,9 @@
-import React from "react"
-import Header from "./Header"
-import {connect} from "react-redux"
-import {compose} from "redux"
-import {RootState} from "../../redux/redux-store"
-import {Nullable} from "../../redux/authReducer"
+import React, {ComponentType} from 'react'
+import Header from './Header'
+import {connect} from 'react-redux'
+import {compose} from 'redux'
+import {RootState} from '../../redux/redux-store'
+import {Nullable} from '../../redux/authReducer'
 
 interface StateProps {
     id: Nullable<number>
@@ -32,7 +32,7 @@ const mapStateToProps = (state: RootState): StateProps => ({
     isAuth: state.auth.isAuth,
 })
 
-export default compose(
+export default compose<ComponentType>(
     connect<StateProps, unknown, unknown, RootState>(
         mapStateToProps,
         null

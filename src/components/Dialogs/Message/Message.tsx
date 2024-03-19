@@ -6,7 +6,6 @@ interface Props {
     number: number
 }
 
-
 const Message: FC<Props> = ({message, number}) => {
 
     return (

@@ -21,13 +21,8 @@ interface DispatchProps {
     getInitialize: () => void
 }
 
-const ProfileContainer =
-    lazy(() =>
-        import( './components/Profile/ProfileContainer'))
-
-const DialogsContainer =
-    lazy(() =>
-        import( './components/Dialogs/DialogsContainer'))
+const ProfileContainer = lazy(() => import( './components/Profile/ProfileContainer'))
+const DialogsContainer = lazy(() => import( './components/Dialogs/DialogsContainer'))
 
 class App extends React.Component<StateProps & DispatchProps> {
 
@@ -53,19 +48,16 @@ class App extends React.Component<StateProps & DispatchProps> {
                                             <Route path='/profile/:profileId?' element={<ProfileContainer/>}/>
                                             <Route path='/users' element={<UsersContainer/>}/>
                                             <Route path='/login' element={<LoginContainer/>}/>
-                                            <Route path='*'
-                                                   element={
-                                                       <div className='not-found'>
-                                                           <h1>404 NOT FOUND</h1>
-                                                       </div>
-                                                   }/>
+                                            <Route path='*' element={
+                                                <div className='not-found'>
+                                                    <h1>404 NOT FOUND</h1>
+                                                </div>}/>
                                         </Routes>
                                     </Suspense>
                                 </main>
                             </div>
                         </div>
-                    </div>
-                }
+                    </div>}
             </>
         )
     }
@@ -77,7 +69,7 @@ const mapStateToProps = (state: RootState) => ({
 
 export default compose<ComponentType>(
     withRouter,
-    connect(
+    connect<StateProps, DispatchProps, unknown, RootState>(
         mapStateToProps,
         {
             getInitialize,

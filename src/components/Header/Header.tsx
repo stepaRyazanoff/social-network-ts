@@ -1,7 +1,7 @@
 import React, {FC} from 'react'
 import cl from './Header.module.css'
-import {NavLink} from "react-router-dom"
-import {Nullable} from "../../redux/authReducer";
+import {NavLink} from 'react-router-dom'
+import {Nullable} from '../../redux/authReducer'
 
 interface Props {
     userPhoto: Nullable<string>

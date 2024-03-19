@@ -1,4 +1,4 @@
-import React, {Component, ComponentElement, ComponentType} from "react"
+import React, {ComponentType} from "react"
 import Navbar from "./Navbar"
 import {connect} from "react-redux"
 import {logout} from "../../redux/authReducer"
@@ -12,9 +12,7 @@ interface DispatchProps {
 
 class NavbarContainer extends React.Component<DispatchProps> {
     render() {
-        const logOut = () => {
-            this.props.logout()
-        }
+        const logOut = () => this.props.logout()
 
         return (
             <Navbar logOut={logOut}/>

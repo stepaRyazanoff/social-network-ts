@@ -3,7 +3,6 @@ import {stopSubmit} from "redux-form"
 import {ActionsReturnType, AppDispatch, RootState} from "./redux-store"
 import {ThunkDispatch} from "redux-thunk"
 
-
 type ActionsType = ActionsReturnType<typeof actions>
 export type Nullable<T> = null | T
 
@@ -52,23 +51,20 @@ export const authReducer = (state = initialState, action: ActionsType): InitialS
 
 const actions = {
     setAuthUserData: (userId: Nullable<number>, login: Nullable<string>, email: Nullable<string>, isAuth: boolean) =>
-        ({
-            type: 'SN/AUTH/SET_AUTH_USER_DATA', data: {userId, login, email, isAuth}
-        } as const),
+        ({type: 'SN/AUTH/SET_AUTH_USER_DATA', data: {userId, login, email, isAuth}} as const),
     setAuthUserPhoto: (photo: Nullable<string>) => ({type: 'SN/AUTH/SET_USER_PHOTO', photo} as const),
     setCaptchaUrl: (captcha: Nullable<string>) => ({type: 'SN/AUTH/SET_CAPTCHA_URL', captcha} as const)
 }
 
 
 export const authMe = () => async (dispatch: ThunkDispatch<RootState, unknown, ActionsType>) => {
-    const authData = await authAPI.authMe();
+    const authData = await authAPI.authMe()
     if (authData.resultCode === ResultCodeEnum.success) {
-        authAPI.getAuthPhoto(authData.data.id)
-            .then((photo) => {
-                const {id, login, email} = authData.data;
-                dispatch(actions.setAuthUserPhoto(photo));
-                dispatch(actions.setAuthUserData(id, login, email, true));
-            });
+        authAPI.getAuthPhoto(authData.data.id).then((photo) => {
+            const {id, login, email} = authData.data;
+            dispatch(actions.setAuthUserPhoto(photo));
+            dispatch(actions.setAuthUserData(id, login, email, true));
+        });
     }
 }
 
@@ -92,17 +88,15 @@ export const login =
         }
 
 export const getCaptchaUrl = () => (dispatch: AppDispatch) => {
-    securityAPI.getCaptcha()
-        .then(data => dispatch(actions.setCaptchaUrl(data.url)))
+    securityAPI.getCaptcha().then(data => dispatch(actions.setCaptchaUrl(data.url)))
 }
 
 export const logout = () => (dispatch: AppDispatch) => {
-    authAPI.logout()
-        .then((data) => {
-            if (data.resultCode === ResultCodeEnum.success) {
-                dispatch(actions.setAuthUserData(null, null, null, false))
-            }
-        })
+    authAPI.logout().then((data) => {
+        if (data.resultCode === ResultCodeEnum.success) {
+            dispatch(actions.setAuthUserData(null, null, null, false))
+        }
+    })
 }
 
 

@@ -120,28 +120,26 @@ const actions = {
 
 export const getUsers = (pageSize: number, currentPage: number) => (dispatch: AppDispatch) => {
     dispatch(actions.toggleIsFetching(true))
-    usersAPI.getUsers(pageSize, currentPage)
-        .then(data => {
-            dispatch(actions.setUsers(data.items))
-            dispatch(actions.setTotalCount(data.totalCount))
-            dispatch(actions.setCurrentPage(currentPage))
-            dispatch(actions.toggleIsFetching(false))
-        })
+    usersAPI.getUsers(pageSize, currentPage).then(data => {
+        dispatch(actions.setUsers(data.items))
+        dispatch(actions.setTotalCount(data.totalCount))
+        dispatch(actions.setCurrentPage(currentPage))
+        dispatch(actions.toggleIsFetching(false))
+    })
 }
 
 const subscriptionFlow =
     (dispatch: AppDispatch,
      userId: number,
-     apiMethod: (userId: number) => Promise<CommonAPIType<{}, ResultCodeEnum>>,
+     apiMethod: (userId: number) => Promise<CommonAPIType>,
      actionCreator: (userId: number) => ({ type: string, userId: number })) => {
         dispatch(actions.toggleFollowingProgress(userId, true))
-        apiMethod(userId)
-            .then((data) => {
-                if (data.resultCode === ResultCodeEnum.success) {
-                    dispatch(actionCreator(userId))
-                    dispatch(actions.toggleFollowingProgress(userId, false))
-                }
-            })
+        apiMethod(userId).then((data) => {
+            if (data.resultCode === ResultCodeEnum.success) {
+                dispatch(actionCreator(userId))
+                dispatch(actions.toggleFollowingProgress(userId, false))
+            }
+        })
     }
 
 export const subscribeToUser = (userId: number) => (dispatch: AppDispatch) => {

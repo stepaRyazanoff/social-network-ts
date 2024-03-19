@@ -18,34 +18,24 @@ const Pagination: FC<Props> =
         for (let i = 1; i <= totalPages; i++) {
             pages.push(i)
         }
-        const [portionNumber, setPortionNumber] = useState<number>(1)
+        const [portionNumber, setPortionNumber] = useState(1)
+        useEffect(() => setPortionNumber(Math.ceil(currentPage / portionSize))
+            , [currentPage, portionSize])
         const portionsCount = Math.ceil(totalPages / portionSize)
         const leftBorderPortion = (portionNumber - 1) * portionSize + 1
         const rightBorderPortion = portionNumber * portionSize
-
-        useEffect(() => {
-            setPortionNumber(Math.ceil(currentPage / portionSize))
-        }, [currentPage, portionSize])
-
-        const onNextButtonClick = () => {
-            setPortionNumber(portionNumber + 1)
-        }
-        const onPrevButtonClick = () => {
-            setPortionNumber(portionNumber - 1)
-        }
-
-        const onClickToNumber = (page: number) => {
-            setCurrentPage(page)
-        }
+        const onNextButtonClick = () => setPortionNumber(portionNumber + 1)
+        const onPrevButtonClick = () => setPortionNumber(portionNumber - 1)
+        const onClickToNumber = (page: number) => setCurrentPage(page)
 
         return (
             <div className={cl.pagination}>
                 <div className={cl.paginationPages}>
                     {portionNumber > 1 && <span className={cl.prevBtn} onClick={onPrevButtonClick}>{'<'}</span>}
-                    {pages.filter(p => p >= leftBorderPortion && p <= rightBorderPortion).map(p => <span
-                        className={cn({[cl.active]: currentPage === p}, cl.pageNumber)}
-                        onClick={() => onClickToNumber(p)}
-                        key={p}>{p}</span>)}
+                    {pages.filter(p => p >= leftBorderPortion && p <= rightBorderPortion).map(p =>
+                        <span className={cn({[cl.active]: currentPage === p}, cl.pageNumber)}
+                              onClick={() => onClickToNumber(p)}
+                              key={p}>{p}</span>)}
                     {portionsCount > portionNumber &&
                         <span className={cl.nextBtn} onClick={onNextButtonClick}>{'>'}</span>}
                 </div>

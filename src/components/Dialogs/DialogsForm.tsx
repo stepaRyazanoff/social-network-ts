@@ -26,5 +26,5 @@ const DialogsForm: FC<InjectedFormProps<DialogsData>> = ({handleSubmit}) => {
 }
 
 export default reduxForm<DialogsData>({
-    form: 'dialogs'
+    form: 'dialog'
 })(DialogsForm)

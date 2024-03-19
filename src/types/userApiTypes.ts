@@ -1,3 +1,5 @@
+type Nullable<T> = null | T
+
 interface Photos {
     small: string
     large: string
@@ -14,4 +16,5 @@ interface Users {
 export interface Items {
     items: Users[]
     totalCount: number
+    error: Nullable<string>
 }

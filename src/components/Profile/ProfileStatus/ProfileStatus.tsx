@@ -9,24 +9,14 @@ interface Props {
 const ProfileStatus: FC<Props> = ({userStatus, updateStatus}) => {
     const [editMode, setEditMode] = useState(false)
     const [status, setStatus] = useState(userStatus)
+    useEffect(() => setStatus(userStatus), [userStatus])
 
-    useEffect(() => {
-        setStatus(userStatus)
-    }, [userStatus])
-
-    const onDoubleClicked = () => {
-        setEditMode(true)
-    }
-
+    const onDoubleClicked = () => setEditMode(true)
+    const onTextChange = (e: ChangeEvent<HTMLInputElement>) => setStatus(e.target.value)
     const sendStatus = () => {
         setEditMode(false)
         updateStatus(status)
     }
-
-    const onTextChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setStatus(e.target.value)
-    }
-
 
     return (
         <div className={cl.status}>
@@ -34,15 +24,8 @@ const ProfileStatus: FC<Props> = ({userStatus, updateStatus}) => {
                 <b>Status:</b>
             </span>
             <div className={cl.statusInner}>
-                {!editMode
-                    && <span onDoubleClick={onDoubleClicked}>
-                        {userStatus || 'status'}</span>}
-                {editMode
-                    && <input autoFocus
-                              onBlur={sendStatus}
-                              onChange={onTextChange}
-                              value={status}/>
-                }
+                {!editMode && <span onDoubleClick={onDoubleClicked}>{userStatus || 'status'}</span>}
+                {editMode && <input autoFocus onBlur={sendStatus} onChange={onTextChange} value={status}/>}
             </div>
         </div>
     )

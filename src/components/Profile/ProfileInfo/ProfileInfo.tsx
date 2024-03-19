@@ -49,21 +49,14 @@ const ProfileInfo: FC<Props> = ({
 
     const userLargePhoto = !large ? image : large
 
-    const activateEditMode = () => {
-        switchEditMode(true)
-    }
+    const activateEditMode = () => switchEditMode(true)
 
     const onSelectFile = (e: ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files) {
-            if (e.target.files.length) {
-                setUserPhoto(e.target.files[0])
-            }
-        }
+        if (e.target.files?.length) setUserPhoto(e.target.files[0])
     }
 
-    const handleSubmit = (profileData: ProfileType) => {
-        setUpdatedProfile(profileData)
-    }
+    const handleSubmit = (profileData: ProfileType) => setUpdatedProfile(profileData)
+
 
     return (
         <div className={cl.profileInfo}>
@@ -98,10 +91,9 @@ const ProfileInfo: FC<Props> = ({
                                            updateStatus={updateStatus}/>
                             <span><b>Contacts: </b></span>
                             {Object.keys(contacts)
-                                .map(key =>
-                                    <Contacts key={key}
-                                              contactTitle={key}
-                                              contactValue={contacts[key as keyof ContactsType]}/>)}
+                                .map(key => <Contacts key={key}
+                                                      contactTitle={key}
+                                                      contactValue={contacts[key as keyof ContactsType]}/>)}
                         </div>
                         <div>
                             <ProfileData aboutMe={aboutMe}

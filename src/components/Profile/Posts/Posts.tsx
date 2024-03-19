@@ -17,10 +17,7 @@ const Posts: FC<Props> = ({posts, addPost}) => {
     const postsElements = posts
         .map(p => (<Post key={p.id} message={p.message} likes={p.likesCount}/>))
 
-    const onSubmit = (postsData: PostsData) => {
-        addPost(postsData.post)
-        console.log(postsData.post)
-    }
+    const onSubmit = (postsData: PostsData) => addPost(postsData.post)
 
     return (
         <div className={cl.posts}>
