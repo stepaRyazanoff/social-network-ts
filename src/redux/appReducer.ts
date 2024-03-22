@@ -1,6 +1,6 @@
-import {authMe} from "./authReducer"
-import {ThunkDispatch} from "redux-thunk"
-import {ActionsReturnType, RootState} from "./redux-store"
+import {authMe} from './authReducer'
+import {ThunkDispatch} from 'redux-thunk'
+import {ActionsReturnType, RootState} from './redux-store'
 
 type ActionsType = ActionsReturnType<typeof actions>
 

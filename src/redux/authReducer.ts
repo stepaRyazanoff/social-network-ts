@@ -1,7 +1,7 @@
-import {authAPI, ResultCodeEnum, ResultCodeEnumCaptchaUrl, securityAPI} from "../api/api"
-import {stopSubmit} from "redux-form"
-import {ActionsReturnType, AppDispatch, RootState} from "./redux-store"
-import {ThunkDispatch} from "redux-thunk"
+import {authAPI, ResultCodeEnum, ResultCodeEnumCaptchaUrl, securityAPI} from '../api/api'
+import {stopSubmit} from 'redux-form'
+import {ActionsReturnType, AppDispatch, RootState} from './redux-store'
+import {ThunkDispatch} from 'redux-thunk'
 
 type ActionsType = ActionsReturnType<typeof actions>
 export type Nullable<T> = null | T
@@ -26,19 +26,19 @@ const initialState: InitialState = {
 
 export const authReducer = (state = initialState, action: ActionsType): InitialState => {
     switch (action.type) {
-        case "SN/AUTH/SET_AUTH_USER_DATA":
+        case 'SN/AUTH/SET_AUTH_USER_DATA':
             return {
                 ...state,
                 ...action.data,
             }
 
-        case "SN/AUTH/SET_CAPTCHA_URL":
+        case 'SN/AUTH/SET_CAPTCHA_URL':
             return {
                 ...state,
                 captcha: action.captcha
             }
 
-        case "SN/AUTH/SET_USER_PHOTO":
+        case 'SN/AUTH/SET_USER_PHOTO':
             return {
                 ...state,
                 userPhoto: action.photo
@@ -61,10 +61,10 @@ export const authMe = () => async (dispatch: ThunkDispatch<RootState, unknown, A
     const authData = await authAPI.authMe()
     if (authData.resultCode === ResultCodeEnum.success) {
         authAPI.getAuthPhoto(authData.data.id).then((photo) => {
-            const {id, login, email} = authData.data;
-            dispatch(actions.setAuthUserPhoto(photo));
-            dispatch(actions.setAuthUserData(id, login, email, true));
-        });
+            const {id, login, email} = authData.data
+            dispatch(actions.setAuthUserPhoto(photo))
+            dispatch(actions.setAuthUserData(id, login, email, true))
+        })
     }
 }
 

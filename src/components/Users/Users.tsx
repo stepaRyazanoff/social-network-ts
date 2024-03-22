@@ -1,14 +1,23 @@
-import React, {FC} from "react"
+import React, {FC} from 'react'
 import cl from './Users.module.css'
-import User from "./User/User"
-import Pagination from "../common/Pagination/Pagination"
-import Preloader from "../common/Preloader/Preloader"
-import {StateProps} from "./UsersContainer"
+import User from './User/User'
+import Pagination from '../common/Pagination/Pagination'
+import Preloader from '../common/Preloader/Preloader'
+import {StateProps} from './UsersContainer'
+import UsersSearchForm from './UsersSearchForm'
+import {Filter, UsersType} from '../../redux/usersReducer'
 
-interface Props extends StateProps {
+interface Props {
+    users: UsersType[]
+    totalUsersCount: number
+    currentPage: number
+    pageSize: number
+    isFetching: boolean
+    followingInProgress: number[]
     subscribe: (userId: number) => void
     unsubscribe: (userId: number) => void
     setCurrentPage: (page: number) => void
+    onFilterChange: (filter: Filter) => void
 }
 
 const Users: FC<Props> = ({
@@ -21,10 +30,12 @@ const Users: FC<Props> = ({
                               unsubscribe,
                               isFetching,
                               followingInProgress,
+                              onFilterChange
                           }) => {
     return (
         <div className={cl.users}>
             <div className={cl.inner}>
+                <UsersSearchForm onFilterChange={onFilterChange}/>
                 <Pagination totalUsersCount={totalUsersCount}
                             currentPage={currentPage}
                             pageSize={pageSize}

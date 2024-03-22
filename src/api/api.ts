@@ -1,10 +1,10 @@
-import axios from "axios"
-import {Items} from "../types/userApiTypes"
-import {Auth} from "../types/authMeApiTypes"
-import {Profile} from "../types/profileApiTypes"
-import {UserPhoto} from "../types/userPhotoApiTypes"
-import {CaptchaUrl} from "../types/captchaUrlApiTypes"
-import {CommonAPIType, CommonData} from "../types/commonTypes"
+import axios from 'axios'
+import {Items} from '../types/userApiTypes'
+import {Auth} from '../types/authMeApiTypes'
+import {Profile} from '../types/profileApiTypes'
+import {UserPhoto} from '../types/userPhotoApiTypes'
+import {CaptchaUrl} from '../types/captchaUrlApiTypes'
+import {CommonAPIType, CommonData} from '../types/commonTypes'
 
 const instance = axios.create({
     baseURL: `https://social-network.samuraijs.com/api/1.0/`,
@@ -26,9 +26,12 @@ export enum ResultCodeEnumCaptchaUrl {
 }
 
 export const usersAPI = {
-    getUsers: async (pageSize = 1, currentPage = 5) => {
+    getUsers: async (pageSize = 1, currentPage = 5,
+                     term: string = '', friend: Nullable<boolean> = null) => {
+        console.log(term)
         const response = await
-            instance.get<Items>(`users?count=${pageSize}&page=${currentPage}`)
+            instance.get<Items>(`users?count=${pageSize}&page=${currentPage}&term=${term}` +
+                (friend === null ? '' : `&friend=${friend}`))
         return response.data
     },
 

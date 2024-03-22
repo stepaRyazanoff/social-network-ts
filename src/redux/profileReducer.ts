@@ -1,7 +1,7 @@
-import {profileAPI, ResultCodeEnum} from "../api/api"
-import {stopSubmit} from "redux-form"
-import {ActionsReturnType, AppDispatch, RootState} from "./redux-store"
-import {ContactsType, Photos} from "../types/commonTypes"
+import {profileAPI, ResultCodeEnum} from '../api/api'
+import {stopSubmit} from 'redux-form'
+import {ActionsReturnType, AppDispatch, RootState} from './redux-store'
+import {ContactsType, Photos} from '../types/commonTypes'
 
 type Nullable<T> = null | T
 type ActionsType = ActionsReturnType<typeof actions>
@@ -41,7 +41,7 @@ const initialState: InitialState = {
 
 export const profileReducer = (state = initialState, action: ActionsType): InitialState => {
     switch (action.type) {
-        case "SN/PROFILE/ADD_POST":
+        case 'SN/PROFILE/ADD_POST':
             return {
                 ...state,
                 posts: [...state.posts, {
@@ -51,25 +51,25 @@ export const profileReducer = (state = initialState, action: ActionsType): Initi
                 }],
             }
 
-        case "SN/PROFILE/DELETE_POST":
+        case 'SN/PROFILE/DELETE_POST':
             return {
                 ...state,
                 posts: state.posts.filter(p => p.id !== action.postId),
             }
 
-        case "SN/PROFILE/SET_USER_PROFILE":
+        case 'SN/PROFILE/SET_USER_PROFILE':
             return {
                 ...state,
                 profile: action.profile
             }
 
-        case "SN/PROFILE/SET_USER_STATUS":
+        case 'SN/PROFILE/SET_USER_STATUS':
             return {
                 ...state,
                 status: action.status
             }
 
-        case "SN/PROFILE/SET_PHOTO_SUCCESS":
+        case 'SN/PROFILE/SET_PHOTO_SUCCESS':
             return {
                 ...state,
                 profile: {
@@ -78,7 +78,7 @@ export const profileReducer = (state = initialState, action: ActionsType): Initi
                 }
             }
 
-        case "SN/PROFILE/SET_EDIT_MODE":
+        case 'SN/PROFILE/SET_EDIT_MODE':
             return {
                 ...state,
                 editMode: action.isFetching,

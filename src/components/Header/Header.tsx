@@ -16,7 +16,7 @@ const Header: FC<Props> = ({userPhoto, email, isAuth}) => {
         <header className={cl.header}>
             <div className={cl.headerInner}>
                 <div className={cl.headerLogo}>
-                    <a href='/#'>socialNetwork</a>
+                    <a href="/#">socialNetwork</a>
                 </div>
                 <div className={cl.loginBlock}>
                     {isAuth
@@ -25,7 +25,6 @@ const Header: FC<Props> = ({userPhoto, email, isAuth}) => {
                             {<img src={headerPhoto} alt=""/> || ''}
                         </>
                         : <NavLink to={'/login'}>Login</NavLink>}
-
                 </div>
             </div>
         </header>

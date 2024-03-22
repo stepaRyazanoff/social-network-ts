@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import {BrowserRouter} from "react-router-dom"
+import {BrowserRouter} from 'react-router-dom'
 import './css/index.css'
 import App from './App'
-import {Provider} from "react-redux"
-import store from "./redux/redux-store"
+import {Provider} from 'react-redux'
+import store from './redux/redux-store'
 import reportWebVitals from './reportWebVitals'
 
 

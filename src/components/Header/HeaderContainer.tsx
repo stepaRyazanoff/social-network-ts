@@ -17,10 +17,7 @@ class HeaderContainer extends React.Component<StateProps> {
 
     render() {
         return (
-            <Header email={this.props.email}
-                    isAuth={this.props.isAuth}
-                    userPhoto={this.props.userPhoto}/>
-        )
+            <Header email={this.props.email} isAuth={this.props.isAuth} userPhoto={this.props.userPhoto}/>)
     }
 }
 
