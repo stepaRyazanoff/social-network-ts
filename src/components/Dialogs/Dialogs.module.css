@@ -1,0 +1,55 @@
+.inner {
+    display: flex;
+    justify-content: flex-start;
+    max-width: 426px;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.dialogsBox {
+    flex-basis: 80px;
+    margin-right: 20px;
+}
+
+.messagesBox {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 342px;
+    width: 100%;
+    height: 230px;
+    overflow: auto;
+    border-radius: 3px;
+    background-color: rgba(68, 80, 93, 0.05);
+}
+
+.formBox {
+    text-align: right;
+    margin: 0 23px 0 auto;
+    min-height: 60px;
+    max-width: 342px;
+    width: 100%;
+}
+
+.formBox textarea {
+    padding: 3px 10px;
+    resize: none;
+    border: none;
+    border-radius: 3px;
+    max-width: 341px;
+    width: 100%;
+    height: 25px;
+    margin-bottom: 3px;
+    outline: none;
+}
+
+.formBox button {
+    border: none;
+    color: #fff;
+    background-color: black;
+    padding: 5px 20px;
+    border-radius: 3px;
+}
+
+

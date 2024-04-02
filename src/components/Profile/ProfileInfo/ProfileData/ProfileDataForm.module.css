@@ -1,0 +1,71 @@
+.about {
+    font-size: 10px;
+}
+
+.name {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.about ul li:not(:last-child) {
+    margin-bottom: 5px;
+}
+
+.aboutEdit {
+    max-width: 220px;
+}
+
+.aboutEdit input {
+    border: 1px solid #898c91;
+    width: 100%;
+    outline: none;
+    padding: 5px;
+    margin-bottom: 5px;
+}
+
+.checkbox {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.aboutField {
+    margin-bottom: 10px;
+}
+
+.spanContacts,
+.spanAbout {
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.contactsField span,
+.aboutField span {
+    display: inline-block;
+    margin-bottom: 5px;
+}
+
+.formBtn {
+    border: none;
+    color: #fff;
+    background-color: black;
+    padding: 5px 20px;
+    border-radius: 3px;
+}
+
+.textError {
+    color: #d70202;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.fieldError {
+    border: 1px solid #d70202;
+}
+
+.fieldError::placeholder {
+    color: #d70202;
+}

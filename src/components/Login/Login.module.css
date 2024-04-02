@@ -1,0 +1,14 @@
+.container {
+    max-width: 200px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.loginInner {
+    text-align: center;
+}
+
+.loginInner h4 {
+    margin-bottom: 20px;
+}
+
