@@ -1,6 +1,23 @@
-const SEND_MESSAGE = 'socialNetwork/dialogsPage/SEND_MESSAGE'
+import {ActionReturnType} from '../types/commonTypes'
 
-const initialState = {
+type Actions = ActionReturnType<typeof actions>
+
+interface IDialogs {
+    id: number
+    name: string
+}
+
+interface IMessages {
+    id: number
+    message: string
+}
+
+interface IInitialState {
+    dialogs: IDialogs[]
+    messages: IMessages[]
+}
+
+const initialState: IInitialState = {
     dialogs: [
         {id: 1, name: 'one'},
         {id: 2, name: 'two'},
@@ -14,10 +31,9 @@ const initialState = {
 }
 
 export const dialogsReducer =
-    (state =
-         initialState, action) => {
+    (state = initialState, action: Actions): IInitialState => {
         switch (action.type) {
-            case SEND_MESSAGE:
+            case 'SN/DIALOGS/SEND_MESSAGE':
                 return {
                     ...state,
                     messages: [
@@ -32,7 +48,11 @@ export const dialogsReducer =
         }
     }
 
-export const sendMessage = (messageText) => ({
-    type: SEND_MESSAGE, messageText
-})
+const actions = {
+    sendMessage: (messageText: string) => ({
+        type: 'SN/DIALOGS/SEND_MESSAGE', messageText
+    } as const)
+}
+
+
 

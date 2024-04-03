@@ -1,14 +1,24 @@
-import {profileAPI} from "../api/api"
-import {stopSubmit} from "redux-form"
+import {profileAPI} from '../api/api'
+import {stopSubmit} from 'redux-form'
+import {ActionReturnType, IPhotos, IProfile, Nullable} from '../types/commonTypes'
+import {AppDispatch, RootState} from './redux-store'
 
-const ADD_POST = 'socialNetwork/profilePage/ADD_POST'
-const SET_USER_PROFILE = 'socialNetwork/profilePage/SET_USER_PROFILE'
-const SET_USER_STATUS = 'socialNetwork/profilePage/SET_USER_STATUS'
-const DELETE_POST = 'socialNetwork/profilePage/DELETE_POST'
-const SET_PHOTO_SUCCESS = 'socialNetwork/profilePage/SET_PHOTO_SUCCESS'
-const SET_EDIT_MODE = 'socialNetwork/profilePage/SET_EDIT_MODE'
+type Actions = ActionReturnType<typeof actions>
 
-const initialState = {
+interface IPosts {
+    id: number
+    message: string
+    likesCount: number
+}
+
+interface IInitialState {
+    posts: IPosts[]
+    profile: Nullable<IProfile>
+    status: string
+    editMode: boolean
+}
+
+const initialState: IInitialState = {
     posts: [
         {id: 1, message: 'Hello everyone)!', likesCount: 12},
         {id: 2, message: 'I`m a little dumb!', likesCount: 4},
@@ -18,9 +28,9 @@ const initialState = {
     editMode: false,
 }
 
-export const profileReducer = (state = initialState, action) => {
+export const profileReducer = (state = initialState, action: Actions): IInitialState => {
     switch (action.type) {
-        case ADD_POST:
+        case 'SN/PROFILE/ADD_POST':
             return {
                 ...state,
                 posts: [...state.posts, {
@@ -30,102 +40,94 @@ export const profileReducer = (state = initialState, action) => {
                 }],
             }
 
-        case DELETE_POST:
+        case 'SN/PROFILE/DELETE_POST':
             return {
                 ...state,
                 posts: state.posts.filter(p => p.id !== action.postId),
             }
 
-        case SET_USER_PROFILE:
+        case 'SN/PROFILE/SET_USER_PROFILE':
             return {
                 ...state,
                 profile: action.profile
             }
 
-        case SET_USER_STATUS:
+        case 'SN/PROFILE/SET_USER_STATUS':
             return {
                 ...state,
                 status: action.status
             }
 
-        case SET_PHOTO_SUCCESS:
+        case 'SN/PROFILE/SET_PHOTO_SUCCESS':
             return {
                 ...state,
                 profile: {
-                    ...state.profile,
-                    photos: action.photo
+                    ...state.profile as IProfile,
+                    photos: action.photo as IPhotos
                 }
             }
 
-        case SET_EDIT_MODE:
+        case 'SN/PROFILE/SET_EDIT_MODE':
             return {
                 ...state,
                 editMode: action.isFetching
             }
 
         default:
-            return state
     }
+    return state
 }
 
-export const addPost = postText => ({type: ADD_POST, postText})
-export const deletePost = postId => ({type: DELETE_POST, postId})
-const setPhotoSuccess = photo => ({
-    type: SET_PHOTO_SUCCESS, photo
-})
-export const setProfile = profile => ({
-    type: SET_USER_PROFILE, profile
-})
+export const actions = {
+    addPost: (postText: string) => ({type: 'SN/PROFILE/ADD_POST', postText} as const),
+    deletePost: (postId: number) => ({type: 'SN/PROFILE/DELETE_POST', postId} as const),
+    setPhotoSuccess: (photo: IPhotos) => ({type: 'SN/PROFILE/SET_PHOTO_SUCCESS', photo} as const),
+    setProfile: (profile: IProfile) => ({type: 'SN/PROFILE/SET_USER_PROFILE', profile} as const),
+    setUserStatus: (status: string) => ({type: 'SN/PROFILE/SET_USER_STATUS', status} as const),
+    switchEditMode: (isFetching: boolean) => ({type: 'SN/PROFILE/SET_EDIT_MODE', isFetching} as const)
+}
 
-export const setUserProfile = profileId => dispatch => {
+export const setUserProfile = (profileId: Nullable<number>) => (dispatch: AppDispatch) => {
     profileAPI.getProfile(profileId)
         .then(data => {
-            dispatch(setProfile(data))
+            dispatch(actions.setProfile(data))
         })
 }
 
-export const setUserStatus = status => ({
-    type: SET_USER_STATUS, status
-})
-
-export const switchEditMode = isFetching => ({
-    type: SET_EDIT_MODE, isFetching
-})
-
-export const getUserStatus = userId => dispatch => {
+export const getUserStatus = (userId: Nullable<number>) => (dispatch: AppDispatch) => {
     profileAPI.getUserStatus(userId)
         .then(status => {
-            dispatch(setUserStatus(status))
+            dispatch(actions.setUserStatus(status))
         })
 }
 
-export const setEditMode = isFetching => dispatch => {
-    dispatch(switchEditMode(isFetching))
+export const setEditMode = (isFetching: boolean) => (dispatch: AppDispatch) => {
+    dispatch(actions.switchEditMode(isFetching))
 }
 
-export const updateUserStatus = newStatus => dispatch => {
+export const updateUserStatus = (newStatus: string) => (dispatch: AppDispatch) => {
     profileAPI.updateUserStatus(newStatus)
         .then(data => {
             if (data.resultCode === 0) {
-                dispatch(setUserStatus(newStatus))
+                dispatch(actions.setUserStatus(newStatus))
             }
         })
 }
 
-export const setPhoto = photoFile => dispatch => {
+export const setPhoto = (photoFile: File) => (dispatch: AppDispatch) => {
     profileAPI.setUserPhoto(photoFile)
         .then(data => {
             if (data.resultCode === 0)
-                dispatch(setPhotoSuccess(data.data.photos))
+                dispatch(actions.setPhotoSuccess(data.data.photos))
         })
 }
 
-export const setUpdatedUserProfile = profileData => (dispatch, getState) => {
+export const setUpdatedUserProfile = (profileData: any) => (dispatch: AppDispatch, getState: () => RootState) => {
     profileAPI.setUpdatedProfile(profileData)
         .then(data => {
             if (data.resultCode === 0) {
-                dispatch(setUserProfile(getState().auth.userId))
-                dispatch(switchEditMode(false))
+                dispatch(setUserProfile(getState().auth.id))
+                dispatch(actions.switchEditMode(false))
             } else {
                 if (data.messages.length > 0 && data.messages[0][0] === 'T') {
                     dispatch(stopSubmit('profileData', {

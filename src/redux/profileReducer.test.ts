@@ -1,16 +1,19 @@
-import {addPost, deletePost, profileReducer} from "./profileReducer"
+import {actions, profileReducer} from './profileReducer'
 
 // test data
 const state = {
     posts: [
         {id: 1, message: 'Hello everyone)!', likesCount: 12},
         {id: 2, message: 'I`m a little dumb!', likesCount: 4},
-    ]
+    ],
+    profile: null,
+    status: '',
+    editMode: false,
 }
 
 test('length of posts should be incremented', () => {
     // action
-    const newState = profileReducer(state, addPost('Hello world!'))
+    const newState = profileReducer(state, actions.addPost('Hello world!'))
 
     // expectation
     expect(newState.posts.length).toBe(3)
@@ -18,7 +21,7 @@ test('length of posts should be incremented', () => {
 
 test('message in the post should be correct', () => {
     // action
-    const newState = profileReducer(state, addPost('Hello world!'))
+    const newState = profileReducer(state, actions.addPost('Hello world!'))
 
     // expectation
     expect(newState.posts[2].message).toBe('Hello world!')
@@ -26,7 +29,7 @@ test('message in the post should be correct', () => {
 
 test('after deletion, the length of posts should be decrease', () => {
     // action
-    const newState = profileReducer(state, deletePost(1))
+    const newState = profileReducer(state, actions.deletePost(1))
 
     // expectation
     expect(newState.posts.length).toBe(1)
@@ -34,7 +37,7 @@ test('after deletion, the length of posts should be decrease', () => {
 
 test('if the id passed for deletion is incorrect, the length of posts should not decrease', () => {
     // action
-    const newState = profileReducer(state, deletePost(10))
+    const newState = profileReducer(state, actions.deletePost(10))
 
     // expectation
     expect(newState.posts.length).toBe(2)
