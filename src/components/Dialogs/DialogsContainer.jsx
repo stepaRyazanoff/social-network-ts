@@ -2,7 +2,7 @@ import React from 'react'
 import {compose} from "redux"
 import {connect} from "react-redux"
 import Dialogs from "./Dialogs"
-import {sendMessage} from "../../redux/dialogsReducer"
+import {actions} from '../../redux/dialogsReducer'
 
 class DialogsContainer extends React.Component {
     sendMessage(messageText) {
@@ -29,5 +29,5 @@ export default compose(
     connect(
         mapStateToProps,
         {
-            sendMessage,
+            sendMessage: actions.sendMessage,
         }))(DialogsContainer)

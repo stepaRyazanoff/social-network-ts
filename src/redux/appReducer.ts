@@ -1,7 +1,6 @@
 import {authMe} from './authReducer'
 import {ActionReturnType} from '../types/commonTypes'
-import {ThunkDispatch} from 'redux-thunk'
-import {RootState} from './redux-store'
+import {AppDispatch} from './redux-store'
 
 type Actions = ActionReturnType<typeof actions>
 
@@ -34,7 +33,7 @@ const actions = {
 }
 
 
-export const getInitialize = () => (dispatch: ThunkDispatch<RootState, undefined, Actions>) => {
+export const getInitialize = () => (dispatch: AppDispatch) => {
     dispatch(authMe())
         .then(() => dispatch(actions.setInitialize))
 }

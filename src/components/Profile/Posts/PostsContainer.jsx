@@ -1,7 +1,7 @@
 import React from 'react'
 import {connect} from "react-redux"
 import Posts from "./Posts"
-import {addPost} from "../../../redux/profileReducer"
+import {actions} from '../../../redux/profileReducer'
 
 class PostsContainer extends React.Component {
 
@@ -26,5 +26,5 @@ const mapStateToProps = state => ({
 export default connect(
     mapStateToProps,
     {
-        addPost
+        addPost: actions.addPost
     })(PostsContainer)

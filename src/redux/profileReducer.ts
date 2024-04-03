@@ -63,7 +63,7 @@ export const profileReducer = (state = initialState, action: Actions): IInitialS
                 ...state,
                 profile: {
                     ...state.profile as IProfile,
-                    photos: action.photo as IPhotos
+                    photos: action.photo
                 }
             }
 
@@ -94,7 +94,7 @@ export const setUserProfile = (profileId: Nullable<number>) => (dispatch: AppDis
         })
 }
 
-export const getUserStatus = (userId: Nullable<number>) => (dispatch: AppDispatch) => {
+export const getUserStatus = (userId: number) => (dispatch: AppDispatch) => {
     profileAPI.getUserStatus(userId)
         .then(status => {
             dispatch(actions.setUserStatus(status))
@@ -118,7 +118,7 @@ export const setPhoto = (photoFile: File) => (dispatch: AppDispatch) => {
     profileAPI.setUserPhoto(photoFile)
         .then(data => {
             if (data.resultCode === 0)
-                dispatch(actions.setPhotoSuccess(data.data.photos))
+                dispatch(actions.setPhotoSuccess(data.data))
         })
 }
 

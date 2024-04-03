@@ -1,4 +1,14 @@
-import axios from "axios"
+import axios from 'axios'
+import {
+    CaptchaUrlAPI,
+    CommonAPIType,
+    IAuthMe,
+    IItemsAPI,
+    ILoginData,
+    IPhotos,
+    IProfileAPI,
+    Nullable
+} from '../types/commonTypes'
 
 const instance = axios.create({
     baseURL: `https://social-network.samuraijs.com/api/1.0/`,
@@ -11,19 +21,19 @@ const instance = axios.create({
 export const usersAPI = {
     getUsers: async (pageSize = 1, currentPage = 5) => {
         const response = await
-            instance.get(`users?count=${pageSize}&page=${currentPage}`)
+            instance.get<IItemsAPI>(`users?count=${pageSize}&page=${currentPage}`)
         return response.data
     },
 
-    setSubscribe: async id => {
+    setSubscribe: async (id: number) => {
         const response = await
-            instance.post(`follow/${id}`)
+            instance.post<CommonAPIType<{}>>(`follow/${id}`)
         return response.data
     },
 
-    deleteSubscribe: async id => {
+    deleteSubscribe: async (id: number) => {
         const response = await
-            instance.delete(`follow/${id}`)
+            instance.delete<CommonAPIType<{}>>(`follow/${id}`)
         return response.data
     }
 }
@@ -31,19 +41,19 @@ export const usersAPI = {
 export const authAPI = {
     authMe: async () => {
         const response = await
-            instance.get('auth/me')
+            instance.get<CommonAPIType<IAuthMe>>('auth/me')
         return response.data
     },
 
-    getAuthPhoto: async userId => {
+    getAuthPhoto: async (userId: number) => {
         const response = await
-            instance.get(`profile/${userId}`)
+            instance.get<IProfileAPI>(`profile/${userId}`)
         return response.data.photos.small
     },
 
-    login: async (email, password, rememberMe = false, captcha) => {
+    login: async (email: string, password: string, rememberMe = false, captcha: string) => {
         const response = await
-            instance.post('auth/login', {
+            instance.post<CommonAPIType<ILoginData>>('auth/login', {
                 email,
                 password,
                 rememberMe,
@@ -54,37 +64,37 @@ export const authAPI = {
 
     logout: async () => {
         const response = await
-            instance.delete('auth/login')
+            instance.delete<CommonAPIType<{}>>('auth/login')
         return response.data
     }
 }
 
 export const profileAPI = {
-    getProfile: async id => {
+    getProfile: async (id: Nullable<number>) => {
         const response = await
-            instance.get(`profile/${id}`)
+            instance.get<IProfileAPI>(`profile/${id}`)
         return response.data
     },
 
-    getUserStatus: async userId => {
+    getUserStatus: async (userId: number) => {
         const response = await
-            instance.get(`profile/status/${userId}`)
+            instance.get<string>(`profile/status/${userId}`)
         return response.data
     },
 
-    updateUserStatus: async newStatus => {
+    updateUserStatus: async (newStatus: string) => {
         const response = await
-            instance.put('profile/status', {
+            instance.put<CommonAPIType<{}>>('profile/status', {
                 status: newStatus
             })
         return response.data
     },
 
-    setUserPhoto: async photoFile => {
+    setUserPhoto: async (photoFile: File) => {
         const formData = new FormData()
         formData.append('image', photoFile)
         const response = await
-            instance.put('profile/photo', formData, {
+            instance.put<CommonAPIType<IPhotos>>('profile/photo', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
@@ -92,9 +102,9 @@ export const profileAPI = {
         return response.data
     },
 
-    setUpdatedProfile: async profileData => {
+    setUpdatedProfile: async (profileData: any) => {
         const response = await
-            instance.put('profile',
+            instance.put<CommonAPIType<{}>>('profile',
                 profileData
             )
         return response.data
@@ -105,7 +115,7 @@ export const profileAPI = {
 export const securityAPI = {
     getCaptcha: async () => {
         const response = await
-            instance.get('security/get-captcha-url')
+            instance.get<CaptchaUrlAPI>('security/get-captcha-url')
         return response.data
     }
 }
