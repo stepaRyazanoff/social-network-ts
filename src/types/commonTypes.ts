@@ -1,3 +1,5 @@
+import {ResultCodeSuccess} from '../api/api'
+
 export type ActionReturnType<T> = T extends { [key: string]: (...args: any[]) => infer R } ? R : never
 export type Nullable<T> = null | T
 
@@ -19,11 +21,23 @@ export interface IContacts {
 
 export interface IProfile {
     userId: number
+    aboutMe: string
     lookingForAJob: boolean
     lookingForAJobDescription: string
     fullName: string
     contacts: IContacts
     photos: IPhotos
+}
+
+interface IDataPhotos {
+    photos: IPhotos
+}
+
+export interface IUserPhoto {
+    fieldsErrors: string[]
+    messages: string[]
+    resultCode: ResultCodeSuccess
+    data: IDataPhotos
 }
 
 export interface IUser {
@@ -40,8 +54,8 @@ export interface IItemsAPI {
     error: Nullable<string>
 }
 
-export type CommonAPIType<T> = {
-    resultCode: number
+export type CommonAPIType<T, R> = {
+    resultCode: R
     messages: string[]
     data: T
 }
@@ -52,16 +66,7 @@ export interface IAuthMe {
     login: string
 }
 
-export interface IProfileAPI {
-    userId: number
-    lookingForAJob: boolean
-    lookingForAJobDescription: string
-    fullName: string
-    contacts: IContacts
-    photos: IPhotos
-}
-
-export interface ILoginData {
+export interface ILoginAPI {
     userId: number
 }
 

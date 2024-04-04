@@ -4,11 +4,20 @@ import {
     CommonAPIType,
     IAuthMe,
     IItemsAPI,
-    ILoginData,
+    ILoginAPI,
     IPhotos,
-    IProfileAPI,
-    Nullable
+    IProfile, IUserPhoto, Nullable,
 } from '../types/commonTypes'
+import {IProfileData} from '../components/Profile/ProfileInfo/ProfileInfo'
+
+export enum ResultCodeSuccess {
+    success = 0,
+    error = 1
+}
+
+export enum ResulCodeCaptchaURL {
+    captchaUrl = 10
+}
 
 const instance = axios.create({
     baseURL: `https://social-network.samuraijs.com/api/1.0/`,
@@ -27,13 +36,13 @@ export const usersAPI = {
 
     setSubscribe: async (id: number) => {
         const response = await
-            instance.post<CommonAPIType<{}>>(`follow/${id}`)
+            instance.post<CommonAPIType<{}, ResultCodeSuccess>>(`follow/${id}`)
         return response.data
     },
 
     deleteSubscribe: async (id: number) => {
         const response = await
-            instance.delete<CommonAPIType<{}>>(`follow/${id}`)
+            instance.delete<CommonAPIType<{}, ResultCodeSuccess>>(`follow/${id}`)
         return response.data
     }
 }
@@ -41,19 +50,19 @@ export const usersAPI = {
 export const authAPI = {
     authMe: async () => {
         const response = await
-            instance.get<CommonAPIType<IAuthMe>>('auth/me')
+            instance.get<CommonAPIType<IAuthMe, ResultCodeSuccess>>('auth/me')
         return response.data
     },
 
     getAuthPhoto: async (userId: number) => {
         const response = await
-            instance.get<IProfileAPI>(`profile/${userId}`)
+            instance.get<IProfile>(`profile/${userId}`)
         return response.data.photos.small
     },
 
     login: async (email: string, password: string, rememberMe = false, captcha: string) => {
         const response = await
-            instance.post<CommonAPIType<ILoginData>>('auth/login', {
+            instance.post<CommonAPIType<ILoginAPI, ResultCodeSuccess | ResulCodeCaptchaURL>>('auth/login', {
                 email,
                 password,
                 rememberMe,
@@ -64,15 +73,15 @@ export const authAPI = {
 
     logout: async () => {
         const response = await
-            instance.delete<CommonAPIType<{}>>('auth/login')
+            instance.delete<CommonAPIType<{}, ResultCodeSuccess>>('auth/login')
         return response.data
     }
 }
 
 export const profileAPI = {
-    getProfile: async (id: Nullable<number>) => {
+    getProfile: async (id: number) => {
         const response = await
-            instance.get<IProfileAPI>(`profile/${id}`)
+            instance.get<IProfile>(`profile/${id}`)
         return response.data
     },
 
@@ -84,7 +93,7 @@ export const profileAPI = {
 
     updateUserStatus: async (newStatus: string) => {
         const response = await
-            instance.put<CommonAPIType<{}>>('profile/status', {
+            instance.put<CommonAPIType<{}, ResultCodeSuccess>>('profile/status', {
                 status: newStatus
             })
         return response.data
@@ -94,17 +103,18 @@ export const profileAPI = {
         const formData = new FormData()
         formData.append('image', photoFile)
         const response = await
-            instance.put<CommonAPIType<IPhotos>>('profile/photo', formData, {
+            instance.put<IUserPhoto>('profile/photo', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data'
                 }
             })
+        console.log(response)
         return response.data
     },
 
-    setUpdatedProfile: async (profileData: any) => {
+    setUpdatedProfile: async (profileData: IProfileData) => {
         const response = await
-            instance.put<CommonAPIType<{}>>('profile',
+            instance.put<CommonAPIType<{}, ResultCodeSuccess>>('profile',
                 profileData
             )
         return response.data

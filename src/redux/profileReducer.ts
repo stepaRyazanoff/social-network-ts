@@ -1,7 +1,8 @@
-import {profileAPI} from '../api/api'
+import {profileAPI, ResultCodeSuccess} from '../api/api'
 import {stopSubmit} from 'redux-form'
 import {ActionReturnType, IPhotos, IProfile, Nullable} from '../types/commonTypes'
 import {AppDispatch, RootState} from './redux-store'
+import {IProfileData} from '../components/Profile/ProfileInfo/ProfileInfo'
 
 type Actions = ActionReturnType<typeof actions>
 
@@ -87,7 +88,7 @@ export const actions = {
     switchEditMode: (isFetching: boolean) => ({type: 'SN/PROFILE/SET_EDIT_MODE', isFetching} as const)
 }
 
-export const setUserProfile = (profileId: Nullable<number>) => (dispatch: AppDispatch) => {
+export const setUserProfile = (profileId: number) => (dispatch: AppDispatch) => {
     profileAPI.getProfile(profileId)
         .then(data => {
             dispatch(actions.setProfile(data))
@@ -108,7 +109,7 @@ export const setEditMode = (isFetching: boolean) => (dispatch: AppDispatch) => {
 export const updateUserStatus = (newStatus: string) => (dispatch: AppDispatch) => {
     profileAPI.updateUserStatus(newStatus)
         .then(data => {
-            if (data.resultCode === 0) {
+            if (data.resultCode === ResultCodeSuccess.success) {
                 dispatch(actions.setUserStatus(newStatus))
             }
         })
@@ -117,49 +118,50 @@ export const updateUserStatus = (newStatus: string) => (dispatch: AppDispatch) =
 export const setPhoto = (photoFile: File) => (dispatch: AppDispatch) => {
     profileAPI.setUserPhoto(photoFile)
         .then(data => {
-            if (data.resultCode === 0)
-                dispatch(actions.setPhotoSuccess(data.data))
+            if (data.resultCode === ResultCodeSuccess.success)
+                dispatch(actions.setPhotoSuccess(data.data.photos))
         })
 }
 
-export const setUpdatedUserProfile = (profileData: any) => (dispatch: AppDispatch, getState: () => RootState) => {
-    profileAPI.setUpdatedProfile(profileData)
-        .then(data => {
-            if (data.resultCode === 0) {
-                dispatch(setUserProfile(getState().auth.id))
-                dispatch(actions.switchEditMode(false))
-            } else {
-                if (data.messages.length > 0 && data.messages[0][0] === 'T') {
-                    dispatch(stopSubmit('profileData', {
-                        _error: data.messages[0]
-                    }))
-                } else if (data.messages.length > 0 && data.messages[0][0] === 'I') {
-                    const stringOfError = data.messages[0]
-                        .slice(data.messages[0]
-                            .indexOf('>') + 1, data.messages[0]
-                            .indexOf(')')).toLowerCase()
-                    if (stringOfError === 'mainlink') {
-                        const pieceOfString = stringOfError.slice(0, 4)
-                        const updatedStringOfError = pieceOfString + 'Link'
+export const setUpdatedUserProfile = (profileData: IProfileData) =>
+    (dispatch: AppDispatch, getState: () => RootState) => {
+        profileAPI.setUpdatedProfile(profileData)
+            .then(data => {
+                if (data.resultCode === ResultCodeSuccess.success) {
+                    dispatch(setUserProfile(getState().auth.userId as number))
+                    dispatch(actions.switchEditMode(false))
+                } else {
+                    if (data.messages.length > 0 && data.messages[0][0] === 'T') {
                         dispatch(stopSubmit('profileData', {
-                            'contacts': {
-                                [updatedStringOfError]: data.messages[0]
-                            }
+                            _error: data.messages[0]
                         }))
-                    } else if (stringOfError !== 'mainlink') {
+                    } else if (data.messages.length > 0 && data.messages[0][0] === 'I') {
+                        const stringOfError = data.messages[0]
+                            .slice(data.messages[0]
+                                .indexOf('>') + 1, data.messages[0]
+                                .indexOf(')')).toLowerCase()
+                        if (stringOfError === 'mainlink') {
+                            const pieceOfString = stringOfError.slice(0, 4)
+                            const updatedStringOfError = pieceOfString + 'Link'
+                            dispatch(stopSubmit('profileData', {
+                                'contacts': {
+                                    [updatedStringOfError]: data.messages[0]
+                                }
+                            }))
+                        } else if (stringOfError !== 'mainlink') {
+                            dispatch(stopSubmit('profileData', {
+                                'contacts': {
+                                    [stringOfError]: data.messages[0]
+                                }
+                            }))
+                        }
+                    } else {
                         dispatch(stopSubmit('profileData', {
-                            'contacts': {
-                                [stringOfError]: data.messages[0]
-                            }
+                            _error: 'Some error!!!'
                         }))
                     }
-                } else {
-                    dispatch(stopSubmit('profileData', {
-                        _error: 'Some error!!!'
-                    }))
                 }
-            }
-        })
-}
+            })
+    }
 
 

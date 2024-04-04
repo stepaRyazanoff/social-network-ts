@@ -8,23 +8,23 @@ interface IInitialState {
     initialized: boolean
 }
 
-const initialState = {
+const initialState: IInitialState = {
     initialized: false
 }
 
-export const appReducer =
-    (state = initialState, action: Actions): IInitialState => {
-        switch (action.type) {
-            case 'SN/APP/SET_INITIALIZE':
-                return {
-                    ...state,
-                    initialized: true
-                }
+export const appReducer = (state = initialState, action: Actions): IInitialState => {
+    switch (action.type) {
+        case 'SN/APP/SET_INITIALIZE':
+            console.log('work')
+            return {
+                ...state,
+                initialized: true
+            }
 
-            default:
-                return state
-        }
+        default:
+            return state
     }
+}
 
 const actions = {
     setInitialize: () => ({
@@ -32,8 +32,6 @@ const actions = {
     } as const)
 }
 
-
 export const getInitialize = () => (dispatch: AppDispatch) => {
-    dispatch(authMe())
-        .then(() => dispatch(actions.setInitialize))
+    dispatch(authMe()).then(() => dispatch(actions.setInitialize))
 }

@@ -1,4 +1,4 @@
-import {authAPI, securityAPI} from '../api/api'
+import {authAPI, ResulCodeCaptchaURL, ResultCodeSuccess, securityAPI} from '../api/api'
 import {stopSubmit} from 'redux-form'
 import {AppDispatch} from './redux-store'
 import {ActionReturnType, Nullable} from '../types/commonTypes'
@@ -12,6 +12,7 @@ interface IInitialState {
     userPhoto: Nullable<string>
     isAuth: boolean
     captcha: Nullable<string>
+    userId: Nullable<number>
 }
 
 const initialState: IInitialState = {
@@ -20,7 +21,8 @@ const initialState: IInitialState = {
     email: null,
     userPhoto: null,
     isAuth: false,
-    captcha: null
+    captcha: null,
+    userId : null
 }
 
 export const authReducer = (state = initialState, action: Actions): IInitialState => {
@@ -59,7 +61,7 @@ const actions = {
 
 export const authMe = () => async (dispatch: AppDispatch) => {
     const authData = await authAPI.authMe()
-    if (authData.resultCode === 0) {
+    if (authData.resultCode === ResultCodeSuccess.success) {
         authAPI.getAuthPhoto(authData.data.id)
             .then(photo => {
                 const {id, login, email} = authData.data
@@ -69,14 +71,14 @@ export const authMe = () => async (dispatch: AppDispatch) => {
     }
 }
 
-export const login = (email: string, password: string, rememberMe: boolean, captcha: string) =>
+export const logIn = (email: string, password: string, rememberMe: boolean, captcha: string) =>
     (dispatch: AppDispatch) => {
         authAPI.login(email, password, rememberMe, captcha)
             .then(data => {
-                if (data.resultCode === 0) {
-                    dispatch(authMe())
+                if (data.resultCode === ResultCodeSuccess.success) {
+                   return dispatch(authMe())
                 } else {
-                    if (data.resultCode === 10) {
+                    if (data.resultCode === ResulCodeCaptchaURL.captchaUrl) {
                         dispatch(getCaptchaUrl())
                     }
                     const errorText = data.messages.length > 0
@@ -95,7 +97,7 @@ export const getCaptchaUrl = () => (dispatch: AppDispatch) => {
 export const logout = () => (dispatch: AppDispatch) => {
     authAPI.logout()
         .then(data => {
-            if (data.resultCode === 0) {
+            if (data.resultCode === ResultCodeSuccess.success) {
                 dispatch(actions.setAuthUserData(null, null, null, false))
             }
         })

@@ -1,4 +1,4 @@
-import {usersAPI} from '../api/api'
+import {ResultCodeSuccess, usersAPI} from '../api/api'
 import {updateUsersArray} from '../helpers/userReducerHelpers'
 import {ActionReturnType, IUser} from '../types/commonTypes'
 import {AppDispatch} from './redux-store'
@@ -107,11 +107,12 @@ export const getUsers = (pageSize: number, currentPage: number) => (dispatch: Ap
         })
 }
 
-const subscriptionFlow = (dispatch: AppDispatch, userId: number, apiMethod: (userId: number) => Promise<any>, actionCreator: (userId: number) => Actions) => {
+const subscriptionFlow = (dispatch: AppDispatch, userId: number, apiMethod: (userId: number) =>
+    Promise<any>, actionCreator: (userId: number) => Actions) => {
     dispatch(actions.toggleFollowingProgress(userId, true))
     apiMethod(userId)
         .then((data) => {
-            if (data.resultCode === 0) {
+            if (data.resultCode === ResultCodeSuccess.success) {
                 dispatch(actionCreator(userId))
                 dispatch(actions.toggleFollowingProgress(userId, false))
             }

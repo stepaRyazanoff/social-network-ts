@@ -26,12 +26,3 @@
     color: #e4e8f0;
 }
 
-.not-found {
-    background-color: black;
-    height: 100%;
-    color: #e4e8f0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 15px;
-}
